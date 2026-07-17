@@ -1,49 +1,40 @@
-# Japanese Kana Practice
+# Japanese Kana Practice App
 
-A small browser-based worksheet generator for practicing Japanese romaji, hiragana, and katakana.
+A printable practice-sheet generator for Japanese romaji, hiragana, and katakana.
 
 ## Features
 
 - Choose romaji, hiragana, or katakana.
-- Include one or more gojūon character rows.
-- Generate 1–30 randomized printable pages.
-- Print 180 equal-sized practice cells per US Letter page.
-- Works entirely in the browser with no build tools or server-side code.
+- Select one or more character lines.
+- Generate from 1 to 30 printable pages.
+- Uses every selected character once before reshuffling and beginning a new cycle.
+- Keeps the practice boxes the same size for romaji, hiragana, and katakana.
 
-The standalone `n` / `ん` / `ン` character is grouped with the W row.
+The standalone `n`, `ん`, and `ン` characters are included with the W line.
 
 ## Files
 
-- `index.html` — page structure and controls
-- `style.css` — responsive screen layout and print formatting
-- `script.js` — character data and worksheet generation
+- `index.html` — webpage and controls
+- `style.css` — screen and print formatting
+- `script.js` — character selection and worksheet generation
 
-## Run locally
+## View locally
 
-Open `index.html` in a web browser.
+Keep all three website files in the same folder and open `index.html` in a browser.
 
-For local development, you can also run a simple web server from this folder:
+An internet connection is needed to load jQuery and the Raleway web font.
 
-```bash
-python -m http.server 8000
-```
+## Publish using GitHub Pages
 
-Then open `http://localhost:8000`.
+1. Upload the files to the root of a GitHub repository.
+2. Open the repository's **Settings**.
+3. Select **Pages**.
+4. Under **Build and deployment**, select **Deploy from a branch**.
+5. Select the `main` branch and `/ (root)`.
+6. Save the settings.
 
-## Publish with GitHub Pages
+GitHub Pages will use `index.html` as the website's home page.
 
-1. Create a new GitHub repository.
-2. Upload `index.html`, `style.css`, and `script.js` to the repository root.
-3. Commit the files.
-4. Open the repository's **Settings**.
-5. Select **Pages**.
-6. Under **Build and deployment**, choose **Deploy from a branch**.
-7. Select the `main` branch and the `/ (root)` folder, then save.
-
-GitHub will display the public website address after deployment finishes.
-
-## Original project
-
-Originally developed on CodePen:
+## Original CodePen
 
 https://codepen.io/bgigas/full/KzPojx

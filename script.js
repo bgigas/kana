@@ -1,4 +1,12 @@
-const charactersPerPage = 170;
+/*
+ * Japanese Kana Practice
+ * Balanced character selection version
+ *
+ * Each selected character is used once per shuffled cycle
+ * before any selected character can appear again.
+ */
+
+const charactersPerPage = 180;
 
 const characterRows = {
 	romaji: {
@@ -74,8 +82,10 @@ function getSelectedCharacters() {
 }
 
 /*
- * Creates a shuffled copy of an array.
- * The original array remains unchanged.
+ * Fisher-Yates shuffle.
+ *
+ * Returns a shuffled copy so that the master list of selected
+ * characters remains unchanged.
  */
 function shuffleCharacters(characters) {
 	const shuffled = characters.slice();
@@ -86,7 +96,6 @@ function shuffleCharacters(characters) {
 		);
 
 		const temporaryCharacter = shuffled[i];
-
 		shuffled[i] = shuffled[randomIndex];
 		shuffled[randomIndex] = temporaryCharacter;
 	}
@@ -105,8 +114,7 @@ function updateForm() {
 		) || 1
 	);
 
-	const selectedCharacters =
-		getSelectedCharacters();
+	const selectedCharacters = getSelectedCharacters();
 
 	if (selectedCharacters.length === 0) {
 		output.style.height = "auto";
@@ -122,8 +130,8 @@ function updateForm() {
 	const outputCharacters = [];
 
 	/*
-	 * The bag contains one copy of every selected
-	 * character in randomized order.
+	 * The bag begins empty. It is refilled with one copy of
+	 * every selected character, shuffled into random order.
 	 */
 	let characterBag = [];
 
@@ -133,18 +141,17 @@ function updateForm() {
 		i++
 	) {
 		/*
-		 * Once the bag is empty, refill it with every
-		 * selected character and shuffle it again.
+		 * Only refill after every character from the previous
+		 * cycle has been removed and used.
 		 */
 		if (characterBag.length === 0) {
 			characterBag =
-				shuffleCharacters(
-					selectedCharacters
-				);
+				shuffleCharacters(selectedCharacters);
 		}
 
 		/*
-		 * Remove and use one character from the bag.
+		 * pop() removes the chosen character from the bag,
+		 * preventing it from repeating during this cycle.
 		 */
 		const character = characterBag.pop();
 

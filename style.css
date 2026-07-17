@@ -2,295 +2,245 @@
 	box-sizing: border-box;
 }
 
-:root {
-	--blue: rgb(52 148 186);
-	--light-blue: rgb(180 217 242);
-	--page-background: #f6f6f6;
-	--text: #222;
-	--grid-border: #aaa;
-	--screen-cell-size: 60px;
-}
-
-html {
-	background: var(--page-background);
+html,
+body {
+	margin: 0;
+	padding: 0;
 }
 
 body {
-	margin: 0;
-	color: var(--text);
-	background: var(--page-background);
-	font-family: "Raleway", Arial, sans-serif;
+	font-family: "Raleway", sans-serif;
 	font-weight: 400;
+	background-color: #f6f6f6;
+	color: #222;
 }
 
-/* Controls */
+/* Header and controls */
 
-.controls {
+header {
+	width: 100%;
+	min-height: 100px;
+	padding: 1em;
+
 	display: grid;
 	grid-template-columns:
-		minmax(280px, 1.1fr)
-		minmax(360px, 1.6fr)
-		100px
+		minmax(270px, 1.2fr)
+		minmax(280px, 1.5fr)
+		90px
 		110px;
-	gap: 1rem;
+	gap: 1em;
 	align-items: stretch;
-	width: 100%;
-	padding: 1rem;
-	background: var(--light-blue);
+
+	background-color: rgba(180, 217, 242, 1);
 	border-bottom: 1px solid #a0a0a0;
 }
 
-.controls h1 {
-	grid-column: 1 / -1;
-	margin: 0;
-	font-size: 1.35rem;
-	font-weight: 600;
-}
-
-.form-section {
+div.formsection {
 	min-width: 0;
-	min-height: 72px;
-	margin: 0;
-	padding: 0.7rem;
-	border: 1px solid var(--blue);
-	border-radius: 4px;
-	background: rgb(0 0 0 / 7%);
+	min-height: 68px;
+	padding: 8px;
+
+	display: flex;
+	flex-direction: column;
+
+	border: 1px solid rgba(52, 148, 186, 1);
+	border-radius: 3px;
+	background-color: rgba(0, 0, 0, 0.07);
 }
 
-fieldset.form-section {
+div.formsection span,
+header > div.formsection:nth-child(2)::before {
+	display: block;
+	margin-bottom: 0.6em;
+
+	font-weight: 600;
+	color: #555;
+	text-shadow: 0 0 1px rgba(52, 148, 186, 0.8);
+}
+
+/* Add a heading to the character-line section */
+
+header > div.formsection:nth-child(2)::before {
+	content: "Character Lines";
+}
+
+/* Character-system radio buttons */
+
+div.formholder {
 	display: flex;
 	flex-wrap: wrap;
-	align-content: flex-start;
 	align-items: center;
-	gap: 0.6rem 1rem;
+	gap: 8px 14px;
 }
 
-.form-section legend {
-	padding: 0 0.25rem;
-	color: #555;
-	font-weight: 600;
-	text-shadow: 0 0 1px rgb(52 148 186 / 80%);
-}
-
-.form-section label {
+label {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.3rem;
+	gap: 4px;
 	margin: 0;
 	white-space: nowrap;
 	cursor: pointer;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
-	accent-color: var(--blue);
+/* Character-line checkboxes */
+
+header > div.formsection:nth-child(2) {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	align-items: center;
+	gap: 8px 14px;
 }
 
-.page-options {
-	justify-content: center;
-}
-
-.page-count {
+header > div.formsection:nth-child(2)::before {
+	flex-basis: 100%;
 	width: 100%;
 }
+
+/* Help icons */
+
+i.fa {
+	margin-left: 6px;
+	font-size: 1em;
+	color: rgba(52, 148, 186, 1);
+}
+
+/* Page-number control */
 
 input[type="number"] {
 	width: 100%;
-	min-width: 60px;
-	padding: 0.4rem;
-	border: 1px solid rgb(52 148 186 / 70%);
+	padding: 4px;
+
+	font-family: inherit;
+	font-size: 1em;
+
+	border: 1px solid rgba(52, 148, 186, 0.7);
 	border-radius: 3px;
-	background: rgb(255 255 255 / 65%);
-	font: inherit;
+	background-color: rgba(255, 255, 255, 0.5);
 }
 
-.actions {
-	display: flex;
-	flex-direction: column;
+/* Buttons */
+
+header > div.formsection:last-child {
 	justify-content: center;
-	gap: 0.4rem;
+	gap: 6px;
 }
 
 button {
 	width: 100%;
-	min-height: 34px;
+	min-height: 30px;
 	margin: 0;
-	padding: 0.45rem 0.6rem;
-	border: 1px solid rgb(52 148 186 / 70%);
-	border-radius: 3px;
-	color: var(--text);
-	background: rgb(52 148 186 / 50%);
-	font: 600 1rem "Raleway", Arial, sans-serif;
+	padding: 5px 8px;
+
+	font-family: "Raleway", sans-serif;
+	font-weight: 600;
+	color: #222;
+
 	cursor: pointer;
-	transition: background-color 180ms ease-out, color 180ms ease-out;
+	border: 1px solid rgba(52, 148, 186, 0.7);
+	border-radius: 3px;
+	background-color: rgba(52, 148, 186, 0.5);
+
+	transition:
+		background-color 250ms ease-out,
+		color 250ms ease-out;
 }
 
 button:hover {
-	color: #fff;
-	background: rgb(52 148 186 / 90%);
+	color: #e9e9e9;
+	background-color: rgba(52, 148, 186, 0.85);
 }
 
 button:focus-visible,
 input:focus-visible {
-	outline: 3px solid rgb(52 148 186 / 45%);
+	outline: 2px solid rgba(52, 148, 186, 1);
 	outline-offset: 2px;
 }
 
-/* Generated worksheets */
+/* Practice-sheet output */
 
-#output {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1.5rem;
-	padding: 1.5rem;
-}
+p#output {
+	width: 100%;
+	height: 100vh;
+	margin: 0;
+	padding-top: 1px;
 
-.practice-page {
-	display: grid;
-	grid-template-columns: repeat(12, var(--screen-cell-size));
-	grid-auto-rows: var(--screen-cell-size);
-	width: max-content;
-	max-width: 100%;
-	background: #fff;
-	box-shadow: 0 2px 12px rgb(0 0 0 / 12%);
-}
-
-.grid {
-	display: flex;
-	align-items: flex-start;
-	justify-content: center;
-	width: var(--screen-cell-size);
-	height: var(--screen-cell-size);
-	padding: 0.22rem 0.15rem 0;
 	overflow: hidden;
-	border: 1px dashed var(--grid-border);
-	font-family: "Raleway", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
-	font-size: 1.55rem;
-	line-height: 1;
-	text-align: center;
+	text-align: justify;
+	font-size: 0;
+
+	background-color: #f6f6f6;
 }
 
-.message {
-	margin: 2rem auto;
-	padding: 1rem 1.25rem;
-	max-width: 600px;
-	border: 1px solid var(--blue);
-	border-radius: 4px;
-	background: #fff;
-	text-align: center;
-}
+span.grid {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
 
-.visually-hidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
+	width: 60px;
+	height: 80px;
+	margin: 0;
+	padding: 0 5px;
+
 	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
+	text-align: center;
+
+	font-size: 27px;
+	line-height: 29px;
+
+	border: 1px dashed #aaa;
 }
 
-/* Responsive controls and screen preview */
+.output-message {
+	display: block;
+	padding: 2em;
+	word-spacing: normal;
+	text-align: center;
+	font-size: 18px;
+}
 
-@media screen and (max-width: 950px) {
-	.controls {
-		grid-template-columns: minmax(260px, 1fr) minmax(300px, 1fr);
+/* Smaller screens */
+
+@media screen and (max-width: 900px) {
+	header {
+		grid-template-columns: minmax(260px, 1fr) minmax(280px, 1fr);
 	}
 
-	.page-options,
-	.actions {
-		min-height: 64px;
+	header > div.formsection:nth-child(3),
+	header > div.formsection:nth-child(4) {
+		min-height: 60px;
 	}
 }
 
-@media screen and (max-width: 760px) {
-	:root {
-		--screen-cell-size: calc((100vw - 2rem) / 8);
-	}
-
-	.controls {
+@media screen and (max-width: 600px) {
+	header {
 		grid-template-columns: 1fr;
 	}
 
-	#output {
-		padding: 1rem;
-		overflow-x: auto;
+	div.formholder {
+		gap: 10px 16px;
 	}
 
-	.practice-page {
-		grid-template-columns: repeat(8, var(--screen-cell-size));
-	}
-}
-
-@media screen and (max-width: 440px) {
-	:root {
-		--screen-cell-size: calc((100vw - 1rem) / 5);
-	}
-
-	#output {
-		padding: 0.5rem;
-	}
-
-	.practice-page {
-		grid-template-columns: repeat(5, var(--screen-cell-size));
-	}
-
-	.grid {
-		font-size: 1.25rem;
+	header > div.formsection:nth-child(2) {
+		gap: 10px 18px;
 	}
 }
 
-/* Printing: 12 columns × 15 rows = 180 characters per page */
-
-@page {
-	size: letter portrait;
-	margin: 0.25in;
-}
+/* Printing */
 
 @media print {
-	html,
-	body {
-		background: transparent;
-	}
-
-	.controls,
-	noscript {
+	header {
 		display: none;
 	}
 
-	#output {
-		display: block;
-		margin: 0;
-		padding: 0;
+	body,
+	p#output {
+		background-color: transparent;
 	}
 
-	.practice-page {
-		display: grid;
-		grid-template-columns: repeat(12, 0.65in);
-		grid-template-rows: repeat(15, 0.65in);
-		width: 7.8in;
-		height: 9.75in;
-		margin: 0 auto;
-		box-shadow: none;
-		break-after: page;
-		page-break-after: always;
-	}
-
-	.practice-page:last-child {
-		break-after: auto;
-		page-break-after: auto;
-	}
-
-	.grid {
-		width: 0.65in;
-		height: 0.65in;
-		padding-top: 0.07in;
-		font-size: 20pt;
-		line-height: 1;
-		print-color-adjust: exact;
-		-webkit-print-color-adjust: exact;
+	p#output {
+		width: 100%;
+		height: 100%;
 	}
 }

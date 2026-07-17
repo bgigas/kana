@@ -3,57 +3,137 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Generate printable worksheets for practicing Japanese romaji, hiragana, and katakana.">
-	<title>Japanese Kana Practice</title>
+
+	<title>Japanese Kana Practice App</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+
 	<link rel="stylesheet" href="style.css">
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
 	<script src="script.js" defer></script>
 </head>
+
 <body>
-	<header class="controls">
-		<h1>Japanese Kana Practice</h1>
+	<header>
+		<div class="formsection character-system">
+			<span>Character System</span>
 
-		<fieldset class="form-section character-system">
-			<legend>Character System</legend>
-			<label><input type="radio" name="character-system" value="romaji" checked> Romaji</label>
-			<label><input type="radio" name="character-system" value="hiragana"> Hiragana</label>
-			<label><input type="radio" name="character-system" value="katakana"> Katakana</label>
-		</fieldset>
+			<div class="formholder">
+				<label>
+					<input
+						type="radio"
+						name="charsystem"
+						value="romaji"
+						checked
+					>
+					Romaji
+				</label>
 
-		<fieldset class="form-section character-lines">
-			<legend>Character Lines</legend>
-			<label><input type="checkbox" name="character-row" value="a" checked> A</label>
-			<label><input type="checkbox" name="character-row" value="k" checked> K</label>
-			<label><input type="checkbox" name="character-row" value="s" checked> S</label>
-			<label><input type="checkbox" name="character-row" value="t" checked> T</label>
-			<label><input type="checkbox" name="character-row" value="n"> N</label>
-			<label><input type="checkbox" name="character-row" value="h"> H</label>
-			<label><input type="checkbox" name="character-row" value="m"> M</label>
-			<label><input type="checkbox" name="character-row" value="y"> Y</label>
-			<label><input type="checkbox" name="character-row" value="r"> R</label>
-			<label><input type="checkbox" name="character-row" value="w"> W</label>
-		</fieldset>
+				<label>
+					<input
+						type="radio"
+						name="charsystem"
+						value="hiragana"
+					>
+					Hiragana
+				</label>
 
-		<fieldset class="form-section page-options">
-			<legend>Pages</legend>
-			<label class="page-count">
-				<span class="visually-hidden">Number of pages</span>
-				<input type="number" name="page-count" value="1" min="1" max="30">
+				<label>
+					<input
+						type="radio"
+						name="charsystem"
+						value="katakana"
+					>
+					Katakana
+				</label>
+			</div>
+		</div>
+
+		<div class="formsection character-lines">
+			<div class="formholder">
+				<label>
+					<input type="checkbox" name="charrow" value="a" checked>
+					A
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="k" checked>
+					K
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="s">
+					S
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="t">
+					T
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="n">
+					N
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="h">
+					H
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="m">
+					M
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="y">
+					Y
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="r">
+					R
+				</label>
+
+				<label>
+					<input type="checkbox" name="charrow" value="w">
+					W
+				</label>
+			</div>
+		</div>
+
+		<div class="formsection pages">
+			<span>Pages</span>
+
+			<label>
+				<input
+					type="number"
+					value="1"
+					name="numpages"
+					min="1"
+					max="30"
+				>
 			</label>
-		</fieldset>
+		</div>
 
-		<div class="form-section actions">
-			<button type="button" id="update-button">Update</button>
-			<button type="button" id="print-button">Print</button>
+		<div class="formsection buttons">
+			<button id="btnUpdate" type="button">Update</button>
+
+			<button
+				id="btnPrint"
+				type="button"
+				onclick="window.print()"
+			>
+				Print
+			</button>
 		</div>
 	</header>
 
-	<main id="output" aria-live="polite"></main>
-
-	<noscript>
-		<p class="message">JavaScript must be enabled to generate a practice sheet.</p>
-	</noscript>
+	<p id="output"></p>
 </body>
 </html>
