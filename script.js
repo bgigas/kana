@@ -1,4 +1,4 @@
-const CHARACTERS_PER_PAGE = 180;
+const charactersPerPage = 170;
 
 const characterRows = {
 	romaji: {
@@ -13,6 +13,7 @@ const characterRows = {
 		r: ["ra", "ri", "ru", "re", "ro"],
 		w: ["wa", "wo", "n"]
 	},
+
 	hiragana: {
 		a: ["あ", "い", "う", "え", "お"],
 		k: ["か", "き", "く", "け", "こ"],
@@ -25,6 +26,7 @@ const characterRows = {
 		r: ["ら", "り", "る", "れ", "ろ"],
 		w: ["わ", "を", "ん"]
 	},
+
 	katakana: {
 		a: ["ア", "イ", "ウ", "エ", "オ"],
 		k: ["カ", "キ", "ク", "ケ", "コ"],
@@ -39,87 +41,124 @@ const characterRows = {
 	}
 };
 
-const output = document.querySelector("#output");
-const updateButton = document.querySelector("#update-button");
-const printButton = document.querySelector("#print-button");
-const pageCountInput = document.querySelector('input[name="page-count"]');
-const systemInputs = document.querySelectorAll('input[name="character-system"]');
-const rowInputs = document.querySelectorAll('input[name="character-row"]');
+$(document).ready(function () {
+	$("#btnUpdate").click(updateForm);
 
-function getSelectedSystem() {
-	return document.querySelector('input[name="character-system"]:checked').value;
-}
+	$("input[name=charsystem]").change(updateForm);
+	$("input[name=charrow]").change(updateForm);
+	$("input[name=numpages]").change(updateForm);
 
-function getSelectedRows() {
-	return Array.from(
-		document.querySelectorAll('input[name="character-row"]:checked'),
-		input => input.value
-	);
-}
+	updateForm();
+});
 
 function getSelectedCharacters() {
-	const system = getSelectedSystem();
-	const rows = getSelectedRows();
-	return rows.flatMap(row => characterRows[system][row] ?? []);
+	const selectedSystem =
+		$("input[name=charsystem]:checked").val();
+
+	const selectedRows = $("input[name=charrow]:checked")
+		.map(function () {
+			return this.value;
+		})
+		.get();
+
+	let selectedCharacters = [];
+
+	selectedRows.forEach(function (row) {
+		selectedCharacters =
+			selectedCharacters.concat(
+				characterRows[selectedSystem][row]
+			);
+	});
+
+	return selectedCharacters;
 }
 
-function getPageCount() {
-	const requestedPages = Number.parseInt(pageCountInput.value, 10);
-	if (!Number.isFinite(requestedPages)) return 1;
-	return Math.min(30, Math.max(1, requestedPages));
-}
+/*
+ * Creates a shuffled copy of an array.
+ * The original array remains unchanged.
+ */
+function shuffleCharacters(characters) {
+	const shuffled = characters.slice();
 
-function randomCharacter(characters) {
-	const randomIndex = Math.floor(Math.random() * characters.length);
-	return characters[randomIndex];
-}
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const randomIndex = Math.floor(
+			Math.random() * (i + 1)
+		);
 
-function createPracticePage(characters) {
-	const page = document.createElement("section");
-	page.className = "practice-page";
-	page.setAttribute("aria-label", "Printable character practice page");
+		const temporaryCharacter = shuffled[i];
 
-	const fragment = document.createDocumentFragment();
-	for (let i = 0; i < CHARACTERS_PER_PAGE; i += 1) {
-		const cell = document.createElement("span");
-		cell.className = "grid";
-		cell.textContent = randomCharacter(characters);
-		fragment.appendChild(cell);
+		shuffled[i] = shuffled[randomIndex];
+		shuffled[randomIndex] = temporaryCharacter;
 	}
 
-	page.appendChild(fragment);
-	return page;
-}
-
-function showMessage(message) {
-	output.replaceChildren();
-	const paragraph = document.createElement("p");
-	paragraph.className = "message";
-	paragraph.textContent = message;
-	output.appendChild(paragraph);
+	return shuffled;
 }
 
 function updateForm() {
-	const characters = getSelectedCharacters();
-	const pageCount = getPageCount();
-	pageCountInput.value = String(pageCount);
+	const output = document.getElementById("output");
 
-	if (characters.length === 0) {
-		showMessage("Select at least one character line.");
+	const numPages = Math.max(
+		1,
+		parseInt(
+			$("input[name=numpages]").val(),
+			10
+		) || 1
+	);
+
+	const selectedCharacters =
+		getSelectedCharacters();
+
+	if (selectedCharacters.length === 0) {
+		output.style.height = "auto";
+
+		output.innerHTML =
+			"<span class='output-message'>" +
+			"Select at least one character line." +
+			"</span>";
+
 		return;
 	}
 
-	const pages = document.createDocumentFragment();
-	for (let pageNumber = 0; pageNumber < pageCount; pageNumber += 1) {
-		pages.appendChild(createPracticePage(characters));
+	const outputCharacters = [];
+
+	/*
+	 * The bag contains one copy of every selected
+	 * character in randomized order.
+	 */
+	let characterBag = [];
+
+	for (
+		let i = 0;
+		i < charactersPerPage * numPages;
+		i++
+	) {
+		/*
+		 * Once the bag is empty, refill it with every
+		 * selected character and shuffle it again.
+		 */
+		if (characterBag.length === 0) {
+			characterBag =
+				shuffleCharacters(
+					selectedCharacters
+				);
+		}
+
+		/*
+		 * Remove and use one character from the bag.
+		 */
+		const character = characterBag.pop();
+
+		outputCharacters.push(
+			"<span class='grid'>" +
+			character +
+			"<div class='gridsection'></div>" +
+			"</span>"
+		);
 	}
-	output.replaceChildren(pages);
+
+	output.style.height =
+		numPages * 100 + "vh";
+
+	output.innerHTML =
+		outputCharacters.join(" ");
 }
-
-updateButton.addEventListener("click", updateForm);
-printButton.addEventListener("click", () => window.print());
-systemInputs.forEach(input => input.addEventListener("change", updateForm));
-rowInputs.forEach(input => input.addEventListener("change", updateForm));
-pageCountInput.addEventListener("change", updateForm);
-
-updateForm();
